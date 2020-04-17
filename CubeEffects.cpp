@@ -13,7 +13,7 @@ CubeEffects::CubeEffects(int latchpin, int clockpin, int datapin){
 
     Cube cube(latchpin, clockpin, datapin);
 
-    cube.begin();
+    cube.begin(cube);
 
 
 }

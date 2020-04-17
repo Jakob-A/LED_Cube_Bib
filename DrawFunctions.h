@@ -5,6 +5,10 @@
 #ifndef Draw_h
 #define Draw_h
 
+#include <string.h>
+#include <Time.h>
+#include <Wire.h>
+
 class Draw
 {
     private:

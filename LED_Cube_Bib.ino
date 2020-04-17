@@ -1,9 +1,33 @@
 #include <Arduino.h>
+#include <TimerOne.h>
+#include <string.h>
+#include <Time.h>
+#include <Wire.h>
+#include <DS1307RTC.h>
+#include "DrawFunctions.h"
+#include "CubeText.h"
+#include "CubeEffects.h"
+#include "LEDCube.h"
 
-void setup() {
 
-}
+//--- Pin connected to ST_CP of 74HC595
+#define LATCHPIN 10
+//--- Pin connected to SH_CP of 74HC595
+#define CLOCKPIN 13
+//--- Pin connected to DS of 74HC595
+#define DATAPIN 11
 
-void loop() {
+
+CubeEffects LEDCube(LATCHPIN, CLOCKPIN, DATAPIN);
+
+void setup(){}
+
+void loop(){
+
+    while (!Serial.available()){
+
+        LEDCube.rain(100);
+
+    }
 
 }

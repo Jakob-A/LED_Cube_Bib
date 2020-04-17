@@ -27,20 +27,20 @@ private:
 
     static int current_layer;
 
-    void latchOn();
+    static void latchOn();
 
-    void latchOff();
+    static void latchOff();
 
-    void iProcess();
+    static void iProcess();
 
-    unsigned char spi_transfer(unsigned char data);
+    static unsigned char spi_transfer(unsigned char data);
 
     void setupSPI();
 
 public:
     Cube(int latchpin, int clockpin, int datapin);
 
-    void begin();
+    void begin(Cube cube);
 
 };
 

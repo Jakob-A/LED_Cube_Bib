@@ -1,7 +1,9 @@
 #include "CubeText.h"
 #include "DrawFunctions.h"
 #include <string.h>
-#include "../../../../../Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/USBAPI.h"
+#include <Time.h>
+#include <Wire.h>
+#include "Arduino.h"
 
 #define MINUTES 1
 #define SECONDS 2

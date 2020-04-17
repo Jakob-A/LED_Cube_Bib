@@ -26,7 +26,8 @@ Cube::Cube(int latchpin, int clockpin, int datapin){
 
 }
 
-void Cube::begin(){
+void Cube::begin(Cube cube){
+    
     Serial.begin(9600);
 
     //layer pins
@@ -106,5 +107,3 @@ void Cube::setupSPI() {
     SPSR |= (1 << SPI2X); // set prescaler bits
     delay(10);
 }
-
-
