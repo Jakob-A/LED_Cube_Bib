@@ -5,14 +5,15 @@
 #ifndef Effects_h
 #define Effects_h
 
-#include "LEDCube.h"
-#include "DrawFunctions.h"
 
 class CubeEffects
 {
 private:
     /* data */
 public:
+
+    //holds value for all the pins, [x][y][z]
+    static unsigned char cube[8][8];
 
     CubeEffects();
 

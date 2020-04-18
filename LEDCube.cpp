@@ -4,21 +4,24 @@
 
 #include <avr/io.h>
 #include "LEDCube.h"
-#include "DrawFunctions.h"
+#include "CubeEffects.h"
 #include "Arduino.h"
 #include "TimerOne.h"
-#include "CubeEffects.h"
 #include <string.h>
 #include <Time.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
 
+using namespace CubeSetup;
 
+//--- Used for faster latching -- latchpin - 8 because PortB controls I/O -Ports from 8 to 13
+int lchPinPORTB;
 
+int current_layer = 0;
 
-void startCube(int lchPin, int clkPin, int dtPin){
+void CubeSetup::startCube(int lchPin, int clkPin, int dtPin){
 
-    lchPinPORTB = latchpin - 8;
+    lchPinPORTB = lchPin - 8;
 
     //layer pins
     for (int i = 2; i < 10; i++)
@@ -26,11 +29,11 @@ void startCube(int lchPin, int clkPin, int dtPin){
         pinMode(i, OUTPUT);
     }
 
-    pinMode(latchpin, OUTPUT);
+    pinMode(lchPin, OUTPUT);
     pinMode(clkPin, OUTPUT);
     pinMode(dtPin, OUTPUT);
 
-    digitalWrite(latchpin, LOW);
+    digitalWrite(lchPin, LOW);
     digitalWrite(dtPin, LOW);
     digitalWrite(clkPin, LOW);
 
@@ -44,16 +47,16 @@ void startCube(int lchPin, int clkPin, int dtPin){
 }
 
 //--- Direct port access latching
-void latchOn() {
+void CubeSetup::latchOn() {
     bitSet(PORTB, lchPinPORTB);
 }
-void latchOff() {
+void CubeSetup::latchOff() {
     bitClear(PORTB, lchPinPORTB);
 }
 
 //--- This process is run by the timer and does the PWM control
 //sets the RCK Pin On so if it was off before the Data is stored into the IC's
-void iProcess() {
+void CubeSetup::iProcess() {
     //last layer store
     int oldLayerBit = current_layer + 2;
 
@@ -67,7 +70,7 @@ void iProcess() {
     // latching in the process
     latchOff();
     for (int i = 0 ; i < 8 ; i++) {
-        spi_transfer(Draw::cube[current_layer][i]);
+        spi_transfer(CubeEffects::cube[current_layer][i]);
     }
 
     //Hide the old layer
@@ -79,7 +82,7 @@ void iProcess() {
 }
 
 //--- The really fast SPI version of shiftOut
-unsigned char spi_transfer(unsigned char data)
+unsigned char CubeSetup::spi_transfer(unsigned char data)
 {
     SPDR = data;        // Start the transmission
     loop_until_bit_is_set(SPSR, SPIF);
@@ -88,7 +91,7 @@ unsigned char spi_transfer(unsigned char data)
 
 //--- Used to setup SPI based on current pin startCube
 //    this is called in the startCube routine;
-void setupSPI() {
+void CubeSetup::setupSPI() {
     byte clr;
     SPCR |= ( (1 << SPE) | (1 << MSTR) ); // enable SPI as master
     SPCR &= ~( (1 << SPR1) | (1 << SPR0) ); // clear prescaler bits

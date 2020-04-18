@@ -3,7 +3,9 @@
 // ==========================================================================================
 #include "DrawFunctions.h"
 #include "LEDCube.h"
+#include "CubeEffects.h"
 
+using namespace CubeSetup;
 
 /**
 * Turn on LED at the coordinates x,y,z 
@@ -11,7 +13,7 @@
 void setvoxel(int x, int y, int z)
 {
   if (inrange(x, y, z))
-    cube[z][y] |= (1 << x);
+    CubeEffects::cube[z][y] |= (1u << (unsigned int) x);
 }
 
 /**
@@ -20,7 +22,7 @@ void setvoxel(int x, int y, int z)
 void clrvoxel(int x, int y, int z)
 {
   if (inrange(x, y, z))
-    cube[z][y] &= ~(1 << x);
+    CubeEffects::cube[z][y] &= ~(1u << (unsigned int) x);
 }
 
 
@@ -46,7 +48,7 @@ unsigned char getvoxel(int x, int y, int z)
 {
   if (inrange(x, y, z))
   {
-    if (cube[z][y] & (1 << x))
+    if (CubeEffects::cube[z][y] & (1u << (unsigned)x))
     {
       return 0x01;
     } else
@@ -86,7 +88,7 @@ void fill (unsigned char pattern)
   {
     for (y = 0; y < 8; y++)
     {
-      cube[z][y] = pattern;
+      CubeEffects::cube[z][y] = pattern;
     }
   }
 }
@@ -97,7 +99,7 @@ void fill (unsigned char pattern)
 void flpvoxel(int x, int y, int z)
 {
   if (inrange(x, y, z))
-    cube[z][y] ^= (1 << x);
+    CubeEffects::cube[z][y] ^= (1u << (unsigned int) x);
 }
 
 /**
@@ -134,7 +136,7 @@ void setplane_z (int z)
   if (z >= 0 && z < 8)
   {
     for (i = 0; i < 8; i++)
-      cube[z][i] = 0xff;
+      CubeEffects::cube[z][i] = 0xff;
   }
 }
 
@@ -147,7 +149,7 @@ void clrplane_z (int z)
   if (z >= 0 && z < 8)
   {
     for (i = 0; i < 8; i++)
-      cube[z][i] = 0x00;
+      CubeEffects::cube[z][i] = 0x00;
   }
 }
 
@@ -165,7 +167,7 @@ void setplane_x (int x)
     {
       for (y = 0; y < 8; y++)
       {
-        cube[z][y] |= (1 << x);
+        CubeEffects::cube[z][y] |= (1 << x);
       }
     }
   }
@@ -185,7 +187,7 @@ void clrplane_x (int x)
     {
       for (y = 0; y < 8; y++)
       {
-        cube[z][y] &= ~(1 << x);
+        CubeEffects::cube[z][y] &= ~(1u << (unsigned)x);
       }
     }
   }
@@ -201,7 +203,7 @@ void setplane_y (int y)
   if (y >= 0 && y < 8)
   {
     for (z = 0; z < 8; z++)
-      cube[z][y] = 0xff;
+      CubeEffects::cube[z][y] = 0xff;
   }
 }
 
@@ -214,7 +216,7 @@ void clrplane_y (int y)
   if (y >= 0 && y < 8)
   {
     for (z = 0; z < 8; z++)
-      cube[z][y] = 0x00;
+      CubeEffects::cube[z][y] = 0x00;
   }
 }
 
@@ -283,7 +285,7 @@ void box_filled(int x1, int y1, int z1, int x2, int y2, int z2)
   {
     for (iy = y1; iy <= y2; iy++)
     {
-      cube[iz][iy] |= byteline(x1, x2);
+      CubeEffects::cube[iz][iy] |= (unsigned)byteline(x1, x2);
     }
   }
 
@@ -307,10 +309,10 @@ void box_walls(int x1, int y1, int z1, int x2, int y2, int z2)
     {
       if (iy == y1 || iy == y2 || iz == z1 || iz == z2)
       {
-        cube[iz][iy] = byteline(x1, x2);
+        CubeEffects::cube[iz][iy] = byteline(x1, x2);
       } else
       {
-        cube[iz][iy] |= ((0x01 << x1) | (0x01 << x2));
+        CubeEffects::cube[iz][iy] |= ((0x01u << (unsigned)x1) | (0x01u << (unsigned)x2));
       }
     }
   }
@@ -330,10 +332,10 @@ void box_wireframe(int x1, int y1, int z1, int x2, int y2, int z2)
   argorder(z1, z2, &z1, &z2);
 
   // Lines along X axis
-  cube[z1][y1] = byteline(x1, x2);
-  cube[z1][y2] = byteline(x1, x2);
-  cube[z2][y1] = byteline(x1, x2);
-  cube[z2][y2] = byteline(x1, x2);
+  CubeEffects::cube[z1][y1] = byteline(x1, x2);
+  CubeEffects::cube[z1][y2] = byteline(x1, x2);
+  CubeEffects::cube[z2][y1] = byteline(x1, x2);
+  CubeEffects::cube[z2][y2] = byteline(x1, x2);
 
   // Lines along Y axis
   for (iy = y1; iy <= y2; iy++)

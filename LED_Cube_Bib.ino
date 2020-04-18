@@ -4,10 +4,10 @@
 #include <Time.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
-#include "DrawFunctions.h"
-#include "CubeText.h"
-#include "CubeEffects.h"
 #include "LEDCube.h"
+#include "DrawFunctions.h"
+#include "CubeEffects.h"
+
 
 
 //--- Pin connected to ST_CP of 74HC595

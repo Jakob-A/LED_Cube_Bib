@@ -3,6 +3,8 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)
 set(PROJECT_NAME LED_Cube_Bib)
 project(${PROJECT_NAME})
 
+link_libraries(/Users/jakob/Documents/Arduino/libraries/TimerOne-r11)
+
 set(${CMAKE_PROJECT_NAME}_SKETCH LED_Cube_Bib.ino)
 
 #### Uncomment below additional settings as needed.

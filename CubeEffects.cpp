@@ -4,15 +4,13 @@
 
 #include "CubeEffects.h"
 #include "DrawFunctions.h"
-#include "CubeText.h"
-#include "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/USBAPI.h"
-#include "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/HardwareSerial.h"
 #include "Arduino.h"
+#include "LEDCube.h"
 
-CubeEffects::CubeEffects(){
 
+using namespace CubeSetup;
 
-}
+CubeEffects::CubeEffects(){}
 
 void CubeEffects::begin(int latchpin, int clockpin, int datapin){
 
