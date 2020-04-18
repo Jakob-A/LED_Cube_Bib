@@ -18,15 +18,18 @@
 #define DATAPIN 11
 
 
-CubeEffects LEDCube(LATCHPIN, CLOCKPIN, DATAPIN);
+CubeEffects LEDCube();
 
-void setup(){}
+void setup(){
+  LEDCube().begin(LATCHPIN, CLOCKPIN, DATAPIN);
+  
+  }
 
 void loop(){
 
     while (!Serial.available()){
 
-        LEDCube.rain(100);
+        LEDCube().rain(100);
 
     }
 

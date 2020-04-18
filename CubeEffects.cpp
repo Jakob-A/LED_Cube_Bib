@@ -9,19 +9,14 @@
 #include "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/HardwareSerial.h"
 #include "Arduino.h"
 
-CubeEffects::CubeEffects(int latchpin, int clockpin, int datapin){
-
-    latchPin = latchpin;
-    clockPin = clockpin;
-    dataPin = datapin;
-
+CubeEffects::CubeEffects(){
 
 
 }
 
-void CubeEffects::begin(){
+void CubeEffects::begin(int latchpin, int clockpin, int datapin){
 
-    setup();
+    startCube(latchpin, clockpin, datapin);
 
 }
 
@@ -47,9 +42,9 @@ void CubeEffects::Jede1mal(int t){
         }
       }
     }    
-    Draw::setvoxel(xc,yc,zc);
+    setvoxel(xc,yc,zc);
     delay(t);
-    Draw::clrvoxel(xc,yc,zc);
+    clrvoxel(xc,yc,zc);
     delay(t);
   }
 }
@@ -58,40 +53,40 @@ void CubeEffects::box_wamp(int delayt)
 {
   for (int k = 0; k < 3; k++) {
     for (int i = 0; i < 4; i++) {
-      Draw::fill(0x00);
-      Draw::box_filled(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
-      Draw::delay_ms(delayt);
+      fill(0x00);
+      box_filled(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
+      delay_ms(delayt);
     }
     for (int i = 3; i >= 0; i--) {
-      Draw::fill(0x00);
-      Draw::box_filled(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
-      Draw::delay_ms(delayt);
+      fill(0x00);
+      box_filled(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
+      delay_ms(delayt);
     }
   }
 
   for (int k = 0; k < 3; k++) {
     for (int i = 0; i < 4; i++) {
-      Draw::fill(0x00);
-      Draw::box_walls(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
-      Draw::delay_ms(delayt);
+      fill(0x00);
+      box_walls(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
+      delay_ms(delayt);
     }
     for (int i = 3; i >= 0; i--) {
-      Draw::fill(0x00);
-      Draw::box_walls(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
-      Draw::delay_ms(delayt);
+      fill(0x00);
+      box_walls(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
+      delay_ms(delayt);
     }
   }
 
   for (int k = 0; k < 3; k++) {
     for (int i = 0; i < 4; i++) {
-      Draw::fill(0x00);
-      Draw::box_wireframe(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
-      Draw::delay_ms(delayt);
+      fill(0x00);
+      box_wireframe(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
+      delay_ms(delayt);
     }
     for (int i = 3; i >= 0; i--) {
-      Draw::fill(0x00);
-      Draw::box_wireframe(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
-      Draw::delay_ms(delayt);
+      fill(0x00);
+      box_wireframe(3 - i, 3 - i, 3 - i, 4 + i, 4 + i, 4 + i);
+      delay_ms(delayt);
     }
   }
 }
@@ -100,7 +95,7 @@ void CubeEffects::draw_positions_axis (char axis, unsigned char positions[64], i
 {
   int x, y, p;
 
-  Draw::fill(0x00);
+  fill(0x00);
 
   for (x = 0; x < 8; x++)
   {
@@ -115,13 +110,13 @@ void CubeEffects::draw_positions_axis (char axis, unsigned char positions[64], i
       }
 
       if (axis == AXIS_Z)
-        Draw::setvoxel(x, y, p);
+        setvoxel(x, y, p);
 
       if (axis == AXIS_Y)
-        Draw::setvoxel(x, p, y);
+        setvoxel(x, p, y);
 
       if (axis == AXIS_X)
-        Draw::setvoxel(p, y, x);
+        setvoxel(p, y, x);
     }
   }
 
@@ -194,7 +189,7 @@ void CubeEffects::boxside_randsend_parallel (char axis, int origin, int delayt, 
     }
 
 
-    Draw::delay_ms(delayt);
+    delay_ms(delayt);
 
     draw_positions_axis(axis, cubepos, 0);
 
@@ -225,12 +220,12 @@ void CubeEffects::rain (int iterations)
       }
       rnd_x = rand() % 8;
       rnd_y = rand() % 8;
-      Draw::setvoxel(rnd_x, rnd_y, 7);
+      setvoxel(rnd_x, rnd_y, 7);
       
     }
 
-    Draw::delay_ms(800);
-    Draw::shift(AXIS_Z, -1);
+    delay_ms(800);
+    shift(AXIS_Z, -1);
   }
 }
 
@@ -243,10 +238,10 @@ void CubeEffects::random_filler (int delayt, int state)
     
   if (state == 1)
   {
-    Draw::fill(0x00);
+    fill(0x00);
   } else
   {
-    Draw::fill(0xff);
+    fill(0xff);
   }
 
   while (loop < 511)
@@ -255,10 +250,10 @@ void CubeEffects::random_filler (int delayt, int state)
     y = rand() % 8;
     z = rand() % 8;
 
-    if ((state == 0 && Draw::getvoxel(x, y, z) == 0x01) || (state == 1 && Draw::getvoxel(x, y, z) == 0x00))
+    if ((state == 0 && getvoxel(x, y, z) == 0x01) || (state == 1 && getvoxel(x, y, z) == 0x00))
     {
-      Draw::altervoxel(x, y, z, state);
-      Draw::delay_ms(delayt);
+      altervoxel(x, y, z, state);
+      delay_ms(delayt);
       loop++;
     }
   }
@@ -267,32 +262,32 @@ void CubeEffects::random_filler (int delayt, int state)
 void CubeEffects::blinky2()
 {
   int i, r;
-  Draw::fill(0x00);
+  fill(0x00);
 
   for (r = 0; r < 2; r++)
   {
     i = 750;
     while (i > 0)
     {
-      Draw::fill(0x00);
-      Draw::delay_ms(i);
+      fill(0x00);
+      delay_ms(i);
 
-      Draw::fill(0xff);
-      Draw::delay_ms(100);
+      fill(0xff);
+      delay_ms(100);
 
       i = i - (15 + (1000 / (i / 10)));
     }
 
-    Draw::delay_ms(1000);
+    delay_ms(1000);
 
     i = 750;
     while (i > 0)
     {
-      Draw::fill(0x00);
-      Draw::delay_ms(751 - i);
+      fill(0x00);
+      delay_ms(751 - i);
 
-      Draw::fill(0xff);
-      Draw::delay_ms(100);
+      fill(0xff);
+      delay_ms(100);
 
       i = i - (15 + (1000 / (i / 10)));
     }
@@ -306,15 +301,15 @@ void CubeEffects::planboing (int plane, int speedd)
   int i;
   for (i = 0; i < 8; i++)
   {
-    Draw::fill(0x00);
-    Draw::setplane(plane, i);
-    Draw::delay_ms(speedd);
+    fill(0x00);
+    setplane(plane, i);
+    delay_ms(speedd);
   }
 
   for (i = 7; i >= 0; i--)
   {
-    Draw::fill(0x00);
-    Draw::setplane(plane, i);
-    Draw::delay_ms(speedd);
+    fill(0x00);
+    setplane(plane, i);
+    delay_ms(speedd);
   }
 }

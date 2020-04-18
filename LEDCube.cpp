@@ -16,7 +16,9 @@
 
 
 
-void setup(int lchPin, int clkPin, int dtPin){
+void startCube(int lchPin, int clkPin, int dtPin){
+
+    lchPinPORTB = latchpin - 8;
 
     //layer pins
     for (int i = 2; i < 10; i++)
@@ -24,11 +26,11 @@ void setup(int lchPin, int clkPin, int dtPin){
         pinMode(i, OUTPUT);
     }
 
-    pinMode(lchPin, OUTPUT);
+    pinMode(latchpin, OUTPUT);
     pinMode(clkPin, OUTPUT);
     pinMode(dtPin, OUTPUT);
 
-    digitalWrite(lchPin, LOW);
+    digitalWrite(latchpin, LOW);
     digitalWrite(dtPin, LOW);
     digitalWrite(clkPin, LOW);
 
@@ -43,10 +45,10 @@ void setup(int lchPin, int clkPin, int dtPin){
 
 //--- Direct port access latching
 void latchOn() {
-    bitSet(PORTB, latchPinPORTB);
+    bitSet(PORTB, lchPinPORTB);
 }
 void latchOff() {
-    bitClear(PORTB, latchPinPORTB);
+    bitClear(PORTB, lchPinPORTB);
 }
 
 //--- This process is run by the timer and does the PWM control
@@ -84,8 +86,8 @@ unsigned char spi_transfer(unsigned char data)
     return SPDR;        // return the received byte, we don't need that
 }
 
-//--- Used to setup SPI based on current pin setup
-//    this is called in the setup routine;
+//--- Used to setup SPI based on current pin startCube
+//    this is called in the startCube routine;
 void setupSPI() {
     byte clr;
     SPCR |= ( (1 << SPE) | (1 << MSTR) ); // enable SPI as master
