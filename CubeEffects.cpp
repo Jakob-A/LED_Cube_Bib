@@ -2,21 +2,29 @@
     Library with CubeEffects for the LED Cube
 */
 
+#include "CubeEffects.h"
 #include "DrawFunctions.h"
 #include "CubeText.h"
-#include "CubeEffects.h"
 #include "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/USBAPI.h"
 #include "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/HardwareSerial.h"
 #include "Arduino.h"
 
 CubeEffects::CubeEffects(int latchpin, int clockpin, int datapin){
 
-    Cube cube(latchpin, clockpin, datapin);
+    latchPin = latchpin;
+    clockPin = clockpin;
+    dataPin = datapin;
 
-    cube.begin(cube);
 
 
 }
+
+void CubeEffects::begin(){
+
+    setup();
+
+}
+
 
 void CubeEffects::Jede1mal(int t){
   Serial.print("Wartung gestartet");

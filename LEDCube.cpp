@@ -7,6 +7,7 @@
 #include "DrawFunctions.h"
 #include "Arduino.h"
 #include "TimerOne.h"
+#include "CubeEffects.h"
 #include <string.h>
 #include <Time.h>
 #include <Wire.h>
@@ -15,20 +16,7 @@
 
 
 
-Cube::Cube(int latchpin, int clockpin, int datapin){
-
-    latchPin = latchpin;
-    clockPin = clockpin;
-    dataPin = datapin;
-    latchPinPORTB = latchPin - 8;
-
-    current_layer = 0;
-
-}
-
-void Cube::begin(Cube cube){
-    
-    Serial.begin(9600);
+void setup(int lchPin, int clkPin, int dtPin){
 
     //layer pins
     for (int i = 2; i < 10; i++)
@@ -36,13 +24,13 @@ void Cube::begin(Cube cube){
         pinMode(i, OUTPUT);
     }
 
-    pinMode(latchPin, OUTPUT);
-    pinMode(clockPin, OUTPUT);
-    pinMode(dataPin, OUTPUT);
+    pinMode(lchPin, OUTPUT);
+    pinMode(clkPin, OUTPUT);
+    pinMode(dtPin, OUTPUT);
 
-    digitalWrite(latchPin, LOW);
-    digitalWrite(dataPin, LOW);
-    digitalWrite(clockPin, LOW);
+    digitalWrite(lchPin, LOW);
+    digitalWrite(dtPin, LOW);
+    digitalWrite(clkPin, LOW);
 
     //--- Setup to run SPI
     setupSPI();
@@ -54,16 +42,16 @@ void Cube::begin(Cube cube){
 }
 
 //--- Direct port access latching
-void Cube::latchOn() {
+void latchOn() {
     bitSet(PORTB, latchPinPORTB);
 }
-void Cube::latchOff() {
+void latchOff() {
     bitClear(PORTB, latchPinPORTB);
 }
 
 //--- This process is run by the timer and does the PWM control
 //sets the RCK Pin On so if it was off before the Data is stored into the IC's
-void Cube::iProcess() {
+void iProcess() {
     //last layer store
     int oldLayerBit = current_layer + 2;
 
@@ -89,7 +77,7 @@ void Cube::iProcess() {
 }
 
 //--- The really fast SPI version of shiftOut
-unsigned char Cube::spi_transfer(unsigned char data)
+unsigned char spi_transfer(unsigned char data)
 {
     SPDR = data;        // Start the transmission
     loop_until_bit_is_set(SPSR, SPIF);
@@ -98,7 +86,7 @@ unsigned char Cube::spi_transfer(unsigned char data)
 
 //--- Used to setup SPI based on current pin setup
 //    this is called in the setup routine;
-void Cube::setupSPI() {
+void setupSPI() {
     byte clr;
     SPCR |= ( (1 << SPE) | (1 << MSTR) ); // enable SPI as master
     SPCR &= ~( (1 << SPR1) | (1 << SPR0) ); // clear prescaler bits

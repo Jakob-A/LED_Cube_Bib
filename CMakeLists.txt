@@ -13,3 +13,13 @@ set(${CMAKE_PROJECT_NAME}_SKETCH LED_Cube_Bib.ino)
 # set(mega.upload.speed 115200)
 
 generate_arduino_firmware(${CMAKE_PROJECT_NAME})
+
+add_executable(LED_RaspCupe
+        LEDCube.h
+        LEDCube.cpp
+        CubeEffects.cpp
+        CubeEffects.h
+        CubeText.cpp
+        CubeText.h
+        DrawFunctions.cpp
+        DrawFunctions.h)

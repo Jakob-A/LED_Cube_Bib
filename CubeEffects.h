@@ -14,7 +14,12 @@ private:
     /* data */
 public:
 
+    
+
+
     CubeEffects(int latchpin, int clockpin, int datapin);
+
+    void begin();
 
     /**
      * turns on every LED once at a time
